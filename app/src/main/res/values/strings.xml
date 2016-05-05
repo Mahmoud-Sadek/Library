@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Library</string>
+    <string name="title_activity_control">Control</string>
+    <string name="title_activity_add_book">AddBook</string>
+    <string name="title_activity_show_all_books">ShowAllBooks</string>
+    <string name="title_activity_my_books">MyBooks</string>
+</resources>
