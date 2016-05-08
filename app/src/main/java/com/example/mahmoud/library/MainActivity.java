@@ -24,7 +24,9 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(userName.getText().toString() != null &&  userPass.getText().toString() != null ) {
+                String name = userName.getText().toString();
+                String pass =userPass.getText().toString();
+                if(!(name.equals(""))  &&  !pass.equals("") ) {
                     SharedPreferences sharedPreferences = getSharedPreferences("Data", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("name", userName.getText().toString());

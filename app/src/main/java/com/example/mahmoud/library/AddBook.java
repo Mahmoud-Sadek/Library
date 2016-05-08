@@ -42,7 +42,7 @@ public class AddBook extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String book = bookName.getText().toString();
-                if (book !=null) {
+                if (!book.equals("")) {
                     FileOutputStream fOut = null;
                     try {
                         fOut = openFileOutput("bookfile.txt", MODE_APPEND);
