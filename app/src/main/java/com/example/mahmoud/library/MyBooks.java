@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -35,27 +37,30 @@ public class MyBooks extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String [] book = null;
+
         ArrayList<String> booksList = null;
         try {
-            FileInputStream fIn = openFileInput("mybookfile.txt");
-            InputStreamReader isr = new InputStreamReader(fIn);
-            char[] inputBuffer = new char[100];
+            InputStream inputStream = openFileInput("mybookfile.txt");
 
-            booksList = new ArrayList<String>();
-            int charRead;
-            while ((charRead = isr.read(inputBuffer)) > 0) {
-                String readString = String.copyValueOf(inputBuffer, 0, charRead);
-                booksList.add(readString);
-                inputBuffer = new char[100];
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                booksList = new ArrayList<String>();
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    booksList.add(receiveString.toString());
+                }
+
+                inputStream.close();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        }
+        catch (FileNotFoundException e) {
         } catch (IOException e) {
-            e.printStackTrace();
         }
         book = new String[booksList.size()];
         book = booksList.toArray(book);
-        myBookList = (ListView) findViewById(R.id.BookList);
+        myBookList = (ListView) findViewById(R.id.myBookList);
         ArrayAdapter<String> books = new ArrayAdapter<String>(
                 getBaseContext(),
                 android.R.layout.simple_list_item_1,

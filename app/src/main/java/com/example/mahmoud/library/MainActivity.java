@@ -24,13 +24,16 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPreferences = getSharedPreferences("Data", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("name", userName.getText().toString());
-                editor.putString("pass", userPass.getText().toString());
-                editor.commit();
-                Intent next = new Intent(MainActivity.this, Control.class);
-                startActivity(next);
+                if(userName.getText().toString() != null &&  userPass.getText().toString() != null ) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("Data", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("name", userName.getText().toString());
+                    editor.putString("pass", userPass.getText().toString());
+                    editor.commit();
+                    Intent next = new Intent(MainActivity.this, Control.class);
+                    startActivity(next);
+                }else
+                    Toast.makeText(MainActivity.this, "Please Insert Data!", Toast.LENGTH_SHORT).show();
             }
         });
 

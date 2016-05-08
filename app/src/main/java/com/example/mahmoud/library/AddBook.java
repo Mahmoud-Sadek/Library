@@ -42,20 +42,25 @@ public class AddBook extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String book = bookName.getText().toString();
-                FileOutputStream fOut = null;
-                try {
-                    fOut = openFileOutput("bookfile.txt", MODE_PRIVATE);
-                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fOut);
-                    outputStreamWriter.write(book);
-                    outputStreamWriter.close();
+                if (book !=null) {
+                    FileOutputStream fOut = null;
+                    try {
+                        fOut = openFileOutput("bookfile.txt", MODE_APPEND);
+                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fOut);
+                        outputStreamWriter.write(book + "\n");
+                        outputStreamWriter.close();
 
-                    Toast.makeText(getBaseContext(), "Saved Successfully!", Toast.LENGTH_SHORT).show();
-                    bookName.setText("");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                        Toast.makeText(getBaseContext(), "Saved Successfully!", Toast.LENGTH_SHORT).show();
+                        bookName.setText("");
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }else
+                    Toast.makeText(AddBook.this, "Please Insert Data!", Toast.LENGTH_SHORT).show();
+                
+
             }
         });
 

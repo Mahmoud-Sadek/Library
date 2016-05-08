@@ -11,10 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -43,22 +45,25 @@ public class ShowAllBooks extends AppCompatActivity {
         String [] book = null;
         ArrayList<String> bookList = null;
         try {
-            FileInputStream fIn = openFileInput("bookfile.txt");
-            InputStreamReader isr = new InputStreamReader(fIn);
-            char[] inputBuffer = new char[100];
+            InputStream inputStream = openFileInput("bookfile.txt");
 
-            bookList = new ArrayList<String>();
-            int charRead;
-            while ((charRead = isr.read(inputBuffer)) > 0) {
-                String readString = String.copyValueOf(inputBuffer, 0, charRead);
-                bookList.add(readString);
-                inputBuffer = new char[100];
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                bookList = new ArrayList<String>();
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    bookList.add(receiveString.toString());
+                }
+
+                inputStream.close();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
+
         book = new String[bookList.size()];
         book = bookList.toArray(book);
         booksList = (ListView) findViewById(R.id.BookList);
@@ -66,9 +71,9 @@ public class ShowAllBooks extends AppCompatActivity {
                 getBaseContext(),
                 android.R.layout.simple_list_item_1,
                 book
-
                 );
         booksList.setAdapter(books);
+
         final String[] finalBook = book;
         booksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -80,7 +85,7 @@ public class ShowAllBooks extends AppCompatActivity {
                     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fOut);
                     outputStreamWriter.write(myBook);
                     outputStreamWriter.close();
-                    Toast.makeText(getBaseContext(), "Add To My Books!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Add To My Books! "+myBook, Toast.LENGTH_SHORT).show();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
